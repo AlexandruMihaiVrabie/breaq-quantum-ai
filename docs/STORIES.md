@@ -79,7 +79,7 @@ Poza cere „cele mai multe fraude la maximum 3, 5 sau 10 alarme false”. Defin
 | ID | Story | Owner | Status | Prioritate |
 |---|---|---|---|---|
 | S0 | Setup mediu și repo | Alex | DONE | MUST |
-| S8 | Fundație comună: scoruri salvate, buget de alarme, ledger de inferență | Alex | TODO | MUST |
+| S8 | Fundație comună: scoruri salvate, buget de alarme, ledger de inferență | Alex | IN REVIEW | MUST |
 | S9 | Direcția 1: ansamblu ponderat LR + VQC | Alex | TODO | SHOULD |
 | S10 | Direcția 2: LR + VQC în două etape (10a inferență, 10b validare ieftină) | Coleg | TODO | SHOULD |
 | S11 | Direcția 3: gradient boosting pe 30 de feature-uri (referință extinsă) | Coleg | TODO | COULD |
@@ -117,25 +117,25 @@ Ceasurile se dau înapoi la 04:00 (devine 03:00): nu conta pe ora în plus. Dac�
 
 ## S8 – Fundație comună: scoruri salvate, buget de alarme, ledger de inferență
 
-**Owner:** Alex · **Status:** TODO · **Branch:** `alex-exp8-foundation` · **Prioritate:** MUST · **Depinde de:** —
+**Owner:** Alex · **Status:** IN REVIEW · **Branch:** `alex-exp8-foundation` · **Prioritate:** MUST · **Depinde de:** —
 **Obiectiv:** o singură implementare, verificată, a încărcării scorurilor salvate, a metricii „buget de alarme” și a contabilității de cost, ca S9–S11 să se compare pe exact aceleași cifre și juriul să vadă cod curat în `src/` (nu funcții copiate între notebook-uri).
 
 **Criterii de acceptare:**
-- [ ] P1 respectat; testul nu se încarcă (doar etichetele)
-- [ ] Din scorurile salvate se reproduc, la `atol=1e-9`: AUPRC și pragul max-F1 pe validation pentru A și B la toate (seed, p) față de `results/result_exp2/val_runs.jsonl` și `results/result_exp3/val_runs.jsonl`; AUPRC și F1 pe test față de `results/result_exp5/test_runs.jsonl`
-- [ ] `src/alert_budget.py` dă aceleași TP/FP ca `pick` din Exp. 6 pe scorurile B de pe validation (verificat pe cel puțin 3 (seed, p))
-- [ ] `src/cost_ledger.py` reproduce 1.150.500 execuții de antrenare și 1.708.860 de validare pe epoci (30 epoci, 590 exemple, 56.962 validare, P = 32)
-- [ ] Verificare de independență de batch: scorul lui B pe un subset de 5.000 de tranzacții (p = 0.01, seed 0) coincide cu scorul aceleiași tranzacții în setul complet, `atol=1e-8` (necesar pentru afirmațiile de cost din S10)
-- [ ] Tabel de referință „buget de alarme” pentru A, B, C pe **validation**, k ∈ {3, 5, 10, 50}, p ∈ {0, 0.01, 0.05}, 5 seeds, medie ± std
+- [x] P1 respectat; testul nu se încarcă (doar etichetele)
+- [x] Din scorurile salvate se reproduc, la `atol=1e-9`: AUPRC și pragul max-F1 pe validation pentru A și B la toate (seed, p) față de `results/result_exp2/val_runs.jsonl` și `results/result_exp3/val_runs.jsonl`; AUPRC și F1 pe test față de `results/result_exp5/test_runs.jsonl`
+- [x] `src/alert_budget.py` dă aceleași TP/FP ca `pick` din Exp. 6 pe scorurile B de pe validation (verificat pe cel puțin 3 (seed, p))
+- [x] `src/cost_ledger.py` reproduce 1.150.500 execuții de antrenare și 1.708.860 de validare pe epoci (30 epoci, 590 exemple, 56.962 validare, P = 32)
+- [x] Verificare de independență de batch: scorul lui B pe un subset de 5.000 de tranzacții (p = 0.01, seed 0) coincide cu scorul aceleiași tranzacții în setul complet, `atol=1e-8` (necesar pentru afirmațiile de cost din S10)
+- [x] Tabel de referință „buget de alarme” pentru A, B, C pe **validation**, k ∈ {3, 5, 10, 50}, p ∈ {0, 0.01, 0.05}, 5 seeds, medie ± std
 - [ ] PR deschis; reviewer: Coleg
 
 **Tasks:**
-- [ ] S8-T1 – `src/scores_io.py`: încărcare scoruri val/test pentru A/B/C, etichete, verificare sha256 split (60 min) · owner: Alex · fișiere: `src/scores_io.py`
-- [ ] S8-T2 – `src/alert_budget.py`: `operating_points`, `threshold_at_fp_budget`, `alert_budget_table` (mutate din Exp. 6) (60 min) · owner: Alex · fișiere: `src/alert_budget.py`
-- [ ] S8-T3 – `src/report.py`: `mean_std`, tabel pereche (Δ medie ± std, seeds cu Δ > 0) (45 min) · owner: Alex · fișiere: `src/report.py`
-- [ ] S8-T4 – `src/cost_ledger.py`: cost antrenare, cost scorare pe N tranzacții, shots (45 min) · owner: Alex · fișiere: `src/cost_ledger.py`
-- [ ] S8-T5 – notebook `exp8_foundation_checks`: toate verificările de mai sus + independența de batch (75 min) · owner: Alex · fișiere: `notebooks/exp8_foundation_checks.ipynb`, `results/result_exp8/`
-- [ ] S8-T6 – tabelul de referință „buget de alarme” pe validation (45 min) · owner: Alex · fișiere: `results/result_exp8/`
+- [x] S8-T1 – `src/scores_io.py`: încărcare scoruri val/test pentru A/B/C, etichete, verificare sha256 split (60 min) · owner: Alex · fișiere: `src/scores_io.py`
+- [x] S8-T2 – `src/alert_budget.py`: `operating_points`, `threshold_at_fp_budget`, `alert_budget_table` (mutate din Exp. 6) (60 min) · owner: Alex · fișiere: `src/alert_budget.py`
+- [x] S8-T3 – `src/report.py`: `mean_std`, tabel pereche (Δ medie ± std, seeds cu Δ > 0) (45 min) · owner: Alex · fișiere: `src/report.py`
+- [x] S8-T4 – `src/cost_ledger.py`: cost antrenare, cost scorare pe N tranzacții, shots (45 min) · owner: Alex · fișiere: `src/cost_ledger.py`
+- [x] S8-T5 – notebook `exp8_foundation_checks`: toate verificările de mai sus + independența de batch (75 min) · owner: Alex · fișiere: `notebooks/exp8_foundation_checks.ipynb`, `results/result_exp8/`
+- [x] S8-T6 – tabelul de referință „buget de alarme” pe validation (45 min) · owner: Alex · fișiere: `results/result_exp8/`
 
 **Note / riscuri:**
 - Dacă `results/result_exp5/scores/` nu e în git, Alex trimite arhiva colegului (sau se regenerează: ~25–35 min după estimarea din Exp. 5).
