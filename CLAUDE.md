@@ -61,3 +61,16 @@ Când spunem că am făcut commit, push sau am deschis un PR (sau rulăm `/revie
 - Activate env: macOS `source .venv/bin/activate`; Windows use the env's `Scripts\activate`
 - Install deps: `pip install -r requirements.txt`
 - Quick check: `python -c "import pennylane, torch, sklearn; print(pennylane.__version__, torch.__version__, sklearn.__version__)"`
+
+## Task (Task 2, singurul jurizat)
+- Construim un VQC pentru fraudă (ULB, OpenML 42175) care să reziste la zgomot depolarizant, urmărind costul pe hardware real.
+- Obligatoriu:
+  1. baseline = VQC-ul din Task 1, evaluat cu `evaluate_under_noise` pe 5 seeduri;
+  2. cel puțin o îmbunătățire anti-zgomot pe ≥5 seeduri (alegerea pragului pe validare zgomotoasă NU se numără);
+  3. referință clasică pe aceleași intrări (minimum regresie logistică);
+  4. cost ledger (execuții de circuit și shots pentru antrenare și validare, cu formulă sau `qml.Tracker`).
+- Protocol: split comun 60/20/20 stratificat, seed 42 (`split_indices.npz`), testul doar pentru rezultate finale; zgomot depolarizant p = 0.001, 0.01, 0.05 + fără zgomot, matrici de densitate; prag = maxim F1 pe validare la același zgomot; metrici: AUPRC (principală, accent pe p = 0.01 și 0.05), AUROC, Spearman ρ, precision, recall, F1, MCC; medie ± std pe ≥5 seeduri.
+- Constrângeri: PennyLane pentru partea cuantică, PyTorch pentru cea clasică (scikit-learn doar pentru preprocesare, baseline-uri și metrici); clasificarea trebuie să vină din circuitul cuantic; orice transformare se fitează doar pe train; folosește OpenML 42175 (nu 1597).
+- Livrabile: cod rulabil cap-coadă cu seeduri fixe + prezentare .pdf/.pptx încărcată în cele 24 de ore; talk de 3 minute + 2 minute întrebări.
+- Asistenții AI sunt permiși, dar verifică orice cod PennyLane față de notebook și documentația oficială (funcții mutate sau inexistente; uneori generează cod Qiskit).
+- Detalii complete: `docs/Fraud_on_a_Quantum_Budget_Task.pdf`.
