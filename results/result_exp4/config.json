@@ -1,0 +1,23 @@
+{
+  "experiment": "logistic_regression_reference",
+  "model": "sklearn LogisticRegression(max_iter=1000), other parameters default",
+  "inputs": "same as VQC: undersample(X_train, y_train, seed) 1:1 + AngleEncoder(4, seed) fitted on the 1:1 set, 4 angles in [0, pi]",
+  "input_identity_check": "saved Exp. 2 and Exp. 3 weights reproduce their saved p = 0 validation AUPRC on these angles",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "threshold": "max F1 on validation (choose_threshold)",
+  "evaluation_set": "validation (development results, test not used)",
+  "noise": "none: classical model, identical scores at every p",
+  "split": "split_indices.npz (verified against official reconstruction)",
+  "versions": {
+    "sklearn": "1.9.1",
+    "numpy": "2.5.4",
+    "pennylane": "0.45.1",
+    "torch": "2.14.1+cpu"
+  }
+}

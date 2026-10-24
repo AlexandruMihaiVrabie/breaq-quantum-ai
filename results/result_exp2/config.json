@@ -1,0 +1,36 @@
+{
+  "experiment": "noise_baseline",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "noise_levels": [
+    0.0,
+    0.001,
+    0.01,
+    0.05
+  ],
+  "model": "VQC original Task 1 (ZZ feature map x2 + EfficientSU2-style ansatz, 3 reps, 32 params, readout (1 - <Z0>)/2)",
+  "training": "noise-free, reproduced from ratio_experiment_p0/full ratio 1:1 (verified per epoch), epochs 30",
+  "balancing": "undersample(X_train, y_train, seed), ratio 1:1",
+  "encoder": "AngleEncoder(4, seed) fitted on the 1:1 set",
+  "noise_model": "decompose to NATIVE_GATES, DepolarizingChannel(p) after every gate on every wire (noisy_qnode), default.mixed",
+  "threshold": "max F1 on validation scores at the same p (choose_threshold)",
+  "stage1": "validation only: metrics and Spearman rho on validation",
+  "stage2": "official evaluate_under_noise on test (RUN_TEST)",
+  "split_seed": 42,
+  "split_source": "reconstruit ca în notebookul oficial (split_indices.npz lipsește)",
+  "n_val": 56962,
+  "n_test": 56962,
+  "shots_per_execution": 1024,
+  "data_source": "data/creditcard.csv",
+  "versions": {
+    "pennylane": "0.45.1",
+    "torch": "2.14.1+cpu",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.4"
+  }
+}
