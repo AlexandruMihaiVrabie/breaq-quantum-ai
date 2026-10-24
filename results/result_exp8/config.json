@@ -1,0 +1,64 @@
+{
+  "experiment": "rotation_fusion",
+  "base_model": "Exp. 3 (FEATURE_MAP_REPS=1, ANSATZ_REPS=3, 4 qubits, readout PauliZ(0)), weights from results/result_exp3/weights, no retraining",
+  "change": "single-qubit gate fusion only: H·RZ -> Rot (feature map), RY·RZ -> Rot (ansatz)",
+  "fusion_identities": {
+    "Hadamard,RZ": "RZ(θ)·H = i·Rot(π, π/2, θ)   [H = i·RY(π/2)·RZ(π)]",
+    "RY,RZ": "RZ(b)·RY(a) = Rot(0, a, b)   [Rot(φ, θ, ω) = RZ(ω)·RY(θ)·RZ(φ)]"
+  },
+  "fusion_method": "manual, controlled (single_qubit_fusion used only as cross-check)",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "noise_levels": [
+    0.0,
+    0.001,
+    0.01,
+    0.05
+  ],
+  "scenarios": {
+    "A": {
+      "label": "A · Rot nativ (oficial)",
+      "gate_set": [
+        "CNOT",
+        "CZ",
+        "Hadamard",
+        "RX",
+        "RY",
+        "RZ",
+        "Rot"
+      ]
+    },
+    "B": {
+      "label": "B · Rot → RZ·RY·RZ",
+      "gate_set": [
+        "CNOT",
+        "RX",
+        "RY",
+        "RZ"
+      ]
+    }
+  },
+  "scenario_B_rules": "PennyLane default decompositions: Rot(φ,θ,ω) -> RZ(φ) RY(θ) RZ(ω); Hadamard -> RZ(π/2) RX(π/2) RZ(π/2)",
+  "noise_model": "qml.noise.insert(default.mixed, DepolarizingChannel, p, position='all') after decomposition into the scenario's gate set",
+  "thresholds_primary": "Exp. 3 validation thresholds per (seed, p), from results/result_exp3/val_runs.jsonl",
+  "thresholds_secondary": "re-optimised max-F1 on the same validation set (optimistic)",
+  "evaluation_set": "validation (test not used)",
+  "torch_default_dtype": "torch.float64",
+  "reproduction_tolerance_vs_exp3_float32": 1e-06,
+  "equivalence_tolerance": 1e-10,
+  "n_val_unitary": 100,
+  "n_random": 5000,
+  "smoke_rows": 2000,
+  "shots_per_execution": 1024,
+  "versions": {
+    "pennylane": "0.45.1",
+    "torch": "2.14.1+cpu",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.4"
+  }
+}
