@@ -1,0 +1,68 @@
+{
+  "experiment": "reduced_ansatz",
+  "status": "exploratory (validation only; test results were already consulted earlier in the project)",
+  "change_vs_exp3": "ANSATZ_REPS 3 -> 2 (only change)",
+  "reference": "Exp. 3 (results/result_exp3, read only)",
+  "feature_map_reps": 1,
+  "ansatz_reps": 2,
+  "n_qubits": 4,
+  "n_params": 24,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "noise_levels": [
+    0.0,
+    0.001,
+    0.01,
+    0.05
+  ],
+  "epochs": 30,
+  "batch_size": 32,
+  "learning_rate": 0.05,
+  "optimizer": "Adam",
+  "loss": "BCELoss",
+  "init": "init_weights(seed) (= first 3 layers of Exp. 3's initial weights)",
+  "shuffle": "torch.Generator().manual_seed(seed) (verified identical to the official global randperm after set_seed)",
+  "balancing": "undersample(X_train, y_train, seed), ratio 1:1, 295 fraud + 295 legit = 590 per seed (verified)",
+  "encoder": "AngleEncoder(4, seed) fitted on the 1:1 set",
+  "epoch_selection": "best validation AUPRC at p = 0",
+  "noise_model": "noisy_qnode: NATIVE_GATES decomposition, DepolarizingChannel(p) after every gate on every wire, default.mixed",
+  "threshold": "max F1 on validation scores at the same p",
+  "evaluation_set": "validation (test not used)",
+  "split": "split_indices.npz (verified against official reconstruction)",
+  "shots_per_execution": 1024,
+  "official_configuration_confirmed": {
+    "source": "notebooks/task1_guided_vqc_fraud_detection.ipynb + docs/Fraud_on_a_Quantum_Budget_Task.pdf",
+    "dataset": "284,807 transactions, 492 fraud (OpenML 42175 / Kaggle)",
+    "split": "60/20/20 stratified, seed 42; train 170,883 (295 fraud), val 56,962 (99), test 56,962 (98)",
+    "undersampling": "all training frauds + as many legit drawn without replacement, rng = default_rng(seed), then permuted",
+    "training_examples": 590,
+    "n_qubits": 4,
+    "feature_map": "ZZ: H + RZ(2 x_i) per qubit; per pair i<j: CNOT, RZ(2(pi-x_i)(pi-x_j)), CNOT; FEATURE_MAP_REPS = 2",
+    "ansatz": "EfficientSU2-style: RY+RZ per qubit, linear CNOT ladder, x ANSATZ_REPS + final rotation layer; params = (ANSATZ_REPS+1)*4*2; ANSATZ_REPS = 3 (32 params)",
+    "training": "Adam, lr 0.05, batch 32, BCELoss, 30 epochs, best validation AUPRC epoch",
+    "noise": "depolarizing p = 0.001, 0.01, 0.05 after every native gate on every qubit, default.mixed",
+    "metrics": "AUPRC (primary, p = 0.01 and 0.05), AUROC, Spearman rho, precision, recall, F1, MCC; threshold max F1 on validation at the same p; mean +- std over >= 5 seeds",
+    "cost": "training = epochs * 590 * (1 + 2P); validation = epochs * n_val; 1024 shots per execution"
+  },
+  "differences_vs_official": [
+    "FEATURE_MAP_REPS 2 -> 1 (Exp. 3 change, kept)",
+    "ANSATZ_REPS 3 -> 2 (Exp. 7 change)",
+    "dedicated shuffle generator (same permutations as official)",
+    "evaluated on validation, not test"
+  ],
+  "differences_vs_exp3": [
+    "ANSATZ_REPS 3 -> 2",
+    "n_params 32 -> 24"
+  ],
+  "versions": {
+    "pennylane": "0.45.1",
+    "torch": "2.14.1+cpu",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.4"
+  }
+}

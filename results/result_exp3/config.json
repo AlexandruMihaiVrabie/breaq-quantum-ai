@@ -1,0 +1,42 @@
+{
+  "experiment": "reduced_feature_map",
+  "change_vs_baseline": "FEATURE_MAP_REPS 2 -> 1 (only change)",
+  "feature_map_reps": 1,
+  "ansatz_reps": 3,
+  "n_qubits": 4,
+  "n_params": 32,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "noise_levels": [
+    0.0,
+    0.001,
+    0.01,
+    0.05
+  ],
+  "epochs": 30,
+  "batch_size": 32,
+  "learning_rate": 0.05,
+  "optimizer": "Adam",
+  "loss": "BCELoss",
+  "init": "init_weights(seed)",
+  "shuffle": "torch.Generator().manual_seed(seed)",
+  "balancing": "undersample(X_train, y_train, seed), ratio 1:1",
+  "encoder": "AngleEncoder(4, seed) fitted on the 1:1 set",
+  "epoch_selection": "best validation AUPRC",
+  "noise_model": "noisy_qnode: NATIVE_GATES decomposition, DepolarizingChannel(p) after every gate on every wire, default.mixed",
+  "threshold": "max F1 on validation scores at the same p",
+  "evaluation_set": "validation (test not used)",
+  "split": "split_indices.npz (verified against official reconstruction)",
+  "shots_per_execution": 1024,
+  "versions": {
+    "pennylane": "0.45.1",
+    "torch": "2.14.1+cpu",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.4"
+  }
+}

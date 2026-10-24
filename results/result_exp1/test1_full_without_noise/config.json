@@ -1,0 +1,53 @@
+{
+  "experiment": "ratio_experiment_p0",
+  "mode": "full",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "epochs": 30,
+  "ratios_legit_per_fraud": [
+    1,
+    3,
+    5
+  ],
+  "noise": "none (p = 0), default.qubit, shots=None, diff_method=backprop",
+  "evaluation_set": "validation (test not used)",
+  "split_seed": 42,
+  "split_source": "reconstruit ca în notebookul oficial (split_indices.npz lipsește)",
+  "n_train": 170883,
+  "n_val": 56962,
+  "n_test": 56962,
+  "frauds_train_val_test": [
+    295,
+    99,
+    98
+  ],
+  "subsets": "1:1 = official undersample(X_train, y_train, seed); extra legit without replacement from the rest, rng = np.random.default_rng((seed, 1)); nested",
+  "encoder": "AngleEncoder(4, seed) fitted on the 1:1 subset of each seed, reused for 1:3, 1:5, validation",
+  "n_qubits": 4,
+  "feature_map_reps": 2,
+  "ansatz_reps": 3,
+  "n_params": 32,
+  "batch_size": 32,
+  "learning_rate": 0.05,
+  "optimizer": "Adam",
+  "loss": "BCELoss",
+  "init": "init_weights(seed), same copy for every ratio",
+  "shuffle": "torch.Generator().manual_seed(seed)",
+  "epoch_selection": "best validation AUPRC (average_precision_score)",
+  "threshold": "max F1 on validation (choose_threshold)",
+  "cost_formula": "train = epochs_run * n_train * (1 + 2P); validation = val_evals * n_val (+ 1 final pass, separate); shots = exec * 1024",
+  "shots_per_execution": 1024,
+  "data_source": "data/creditcard.csv",
+  "versions": {
+    "pennylane": "0.45.1",
+    "torch": "2.14.1+cpu",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.4",
+    "pandas": "3.1.0"
+  }
+}

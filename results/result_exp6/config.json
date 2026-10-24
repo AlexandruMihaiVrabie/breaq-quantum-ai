@@ -1,0 +1,55 @@
+{
+  "experiment": "threshold_recall",
+  "model": "B · VQC simplificat (Exp. 3, ZZ ×1)",
+  "weights": "results/result_exp3/weights (sha256 verified vs Exp. 5)",
+  "feature_map_reps": 1,
+  "ansatz_reps": 3,
+  "n_qubits": 4,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "noise_levels": [
+    0.0,
+    0.01,
+    0.05
+  ],
+  "strategies": {
+    "F1-max": "choose_threshold (max F1 on validation)",
+    "recall ≥ 75%": "highest threshold with TP >= ceil(0.75 * 99)",
+    "recall ≥ 80%": "highest threshold with TP >= ceil(0.80 * 99)",
+    "max recall, precision ≥ 60%": "max TP with precision >= 0.60, ties -> highest threshold",
+    "max recall, FP ≤ 50": "max TP with FP <= 50, ties -> highest threshold"
+  },
+  "threshold_selection_set": "validation only",
+  "test_used": false,
+  "retraining": false,
+  "noise_model": "noisy_qnode: NATIVE_GATES decomposition, DepolarizingChannel(p) after every gate on every wire, default.mixed",
+  "split_sha256": "0ea3d5c10fe74035b5c5d425544fc9596922febde8efbcc22f44c4e64c186a68",
+  "scoring_time_s": {
+    "seed0_p0.0": 0.2319575999972585,
+    "seed0_p0.01": 17.02007009999943,
+    "seed0_p0.05": 16.319539199997962,
+    "seed1_p0.0": 0.2260558999987552,
+    "seed1_p0.01": 17.398153099999035,
+    "seed1_p0.05": 18.625208600002225,
+    "seed2_p0.0": 0.27178799999819603,
+    "seed2_p0.01": 22.04542990000118,
+    "seed2_p0.05": 21.309541500002524,
+    "seed3_p0.0": 0.25740349999978207,
+    "seed3_p0.01": 20.517467900001066,
+    "seed3_p0.05": 26.957796400001826,
+    "seed4_p0.0": 0.3288112000009278,
+    "seed4_p0.01": 25.334989400002087,
+    "seed4_p0.05": 22.077400499998475
+  },
+  "versions": {
+    "pennylane": "0.45.1",
+    "torch": "2.14.1+cpu",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.4"
+  }
+}

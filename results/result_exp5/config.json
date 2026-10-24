@@ -1,0 +1,59 @@
+{
+  "experiment": "final_test_evaluation",
+  "models": {
+    "A": {
+      "label": "A · VQC baseline (Exp. 2, ZZ ×2)",
+      "feature_map_reps": 2,
+      "ansatz_reps": 3,
+      "n_params": 32,
+      "weights": "results\\result_exp2\\weights"
+    },
+    "B": {
+      "label": "B · VQC simplificat (Exp. 3, ZZ ×1)",
+      "feature_map_reps": 1,
+      "ansatz_reps": 3,
+      "n_params": 32,
+      "weights": "results\\result_exp3\\weights"
+    }
+  },
+  "classical_reference": "LogisticRegression(max_iter=1000), rebuilt deterministically, coefficients verified against Exp. 4",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "noise_levels": [
+    0.0,
+    0.001,
+    0.01,
+    0.05
+  ],
+  "split": "split_indices.npz (verified against official reconstruction)",
+  "split_sha256": "0ea3d5c10fe74035b5c5d425544fc9596922febde8efbcc22f44c4e64c186a68",
+  "weights_sha256": {
+    "A/seed_0.pt": "197205719b9f67e55c131570bc2f3a3c25aa9f92914efdd5a4d476b471fa8b8a",
+    "B/seed_0.pt": "9c90b2654f955e79053661c21740953f75a11c023a945053daf26da92c742538",
+    "A/seed_1.pt": "4362605fa8abb92983166c557c15ec201fd263be5c32ed75ebd824d77ac210f8",
+    "B/seed_1.pt": "985757d4ddce526681ecd32d8dfdda053a97f9305730f67fd27b74b1cc42bf5a",
+    "A/seed_2.pt": "deb5f79030bf96ecf725100a1ee006bde188b50adc3a36440e6208c06ff6cf49",
+    "B/seed_2.pt": "99eb684608c0d523c7ad56dd0ffce2f20dc21e0baa0219edfcbb388998e17747",
+    "A/seed_3.pt": "cede13457c6114ace6610e0d5efc669054382d5b88e1c3f7b09430ffdee8dd2a",
+    "B/seed_3.pt": "ae9dcd5c3f4bc9e45b9434dd6ec79798494a3ad625cdc26cb88929bcd22de916",
+    "A/seed_4.pt": "a7dfbe2cc5763bf0e749d0b2a8cdf9f27580f2a629d176117082495d73567fe0",
+    "B/seed_4.pt": "d0b098ddbd276ad9b9aa6486ad76e324a32bdc35b2d4c8a0bd099c1425dc6fbc"
+  },
+  "inputs": "undersample(X_train, y_train, seed) 1:1 + AngleEncoder(4, seed) fitted on the 1:1 set",
+  "noise_model": "noisy_qnode: NATIVE_GATES decomposition, DepolarizingChannel(p) after every gate on every wire, default.mixed",
+  "protocol": "evaluate_under_noise per (seed, p): threshold = max F1 on validation at the same p, applied unchanged to test",
+  "n_test": 56962,
+  "n_test_frauds": 98,
+  "shots_per_execution": 1024,
+  "versions": {
+    "pennylane": "0.45.1",
+    "torch": "2.14.1+cpu",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.4"
+  }
+}

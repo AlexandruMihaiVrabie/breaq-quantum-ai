@@ -1,0 +1,5 @@
+{"seed": 0, "best_epoch": 8, "val AUPRC (p = 0)": 0.6346529418736542, "epoci executate": 30, "exemple train": 590, "timp antrenare [s]": 15.955319300002884}
+{"seed": 1, "best_epoch": 25, "val AUPRC (p = 0)": 0.6506399415721923, "epoci executate": 30, "exemple train": 590, "timp antrenare [s]": 15.729872600000817}
+{"seed": 2, "best_epoch": 26, "val AUPRC (p = 0)": 0.603493777641211, "epoci executate": 30, "exemple train": 590, "timp antrenare [s]": 16.068044999999984}
+{"seed": 3, "best_epoch": 17, "val AUPRC (p = 0)": 0.6553843515869464, "epoci executate": 30, "exemple train": 590, "timp antrenare [s]": 17.482462400002987}
+{"seed": 4, "best_epoch": 6, "val AUPRC (p = 0)": 0.5928020491134544, "epoci executate": 30, "exemple train": 590, "timp antrenare [s]": 17.815913999998884}
