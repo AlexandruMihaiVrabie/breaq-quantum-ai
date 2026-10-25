@@ -38,9 +38,9 @@ Două lucruri care contează pentru tot ce urmează:
 
 PDF-ul Task 2, secțiunea „Technical constraints”: *„The model has to stay a VQC: classical layers may prepare the inputs or rescale the circuit's output, but the classification must come from the quantum circuit.”* **[fapt]**
 
-- **Direcția 1 (ansamblu LR + VQC)** și **Direcția 2 (LR filtrează, VQC verifică)**: decizia finală depinde parțial de LR. Textul nu spune explicit că e interzis, dar nici că e permis. **[presupunere]** Le tratăm ca **analize hibride suplimentare**, nu ca „îmbunătățirea anti-zgomot” obligatorie. Îmbunătățirea obligatorie rămâne B (ZZ×1), deja evaluată pe 5 seeds.
-- **Direcția 3 (gradient boosting pe 30 de feature-uri)**: nu e un VQC. E o **referință extinsă** („plafonul clasic”). **Nu înlocuiește** referința clasică cerută de Task 2 (LR pe aceleași 4 unghiuri, deja făcută în Exp. 4).
-- **Excepție conformă [recomandare]:** varianta 10b din S10 (validare mai ieftină la antrenare, folosind LR doar ca să aleagă pe ce tranzacții validăm) produce tot un VQC antrenat, deci intră în direcția „Cheaper training” din PDF și se poate prezenta ca îmbunătățire de cost.
+- **Direcția 1 (ansamblu LR + VQC)** și **Direcția 2 (LR filtrează, VQC verifică; eliminată din plan, fostul S10)**: decizia finală depinde parțial de LR. Textul nu spune explicit că e interzis, dar nici că e permis. **[presupunere]** Le tratăm ca **analize hibride suplimentare**, nu ca „îmbunătățirea anti-zgomot” obligatorie. Îmbunătățirea obligatorie rămâne B (ZZ×1), deja evaluată pe 5 seeds.
+- **Direcția 3 (gradient boosting pe 30 de feature-uri; eliminată din plan, fostul S11)**: nu e un VQC. E o **referință extinsă** („plafonul clasic”). **Nu înlocuiește** referința clasică cerută de Task 2 (LR pe aceleași 4 unghiuri, deja făcută în Exp. 4).
+- **Excepție conformă [recomandare] (eliminată din plan odată cu S10):** varianta 10b din S10 (validare mai ieftină la antrenare, folosind LR doar ca să aleagă pe ce tranzacții validăm) produce tot un VQC antrenat, deci intră în direcția „Cheaper training” din PDF și se poate prezenta ca îmbunătățire de cost.
 - **Ce rămâne neacoperit [recomandare]:** direcții din PDF care sunt eligibile ca „îmbunătățire anti-zgomot” și nu apar în Exp. 1–7: noise-aware training, zero-noise extrapolation, SPSA, data re-uploading, alt readout. Dacă după S8–S10 mai e timp, acestea au valoare mai mare pentru jurizare decât S11.
 
 ---
@@ -50,7 +50,7 @@ PDF-ul Task 2, secțiunea „Technical constraints”: *„The model has to stay
 Fiecare story de mai jos trebuie să respecte aceste verificări; criteriile de acceptare le citează ca `P1`…`P10`.
 
 - **P1 – Split.** `sha256(split_indices.npz)` egal cu `split_sha256` din `results/result_exp5/config.json`; fraude 295 / 99 / 98; validation și test au câte 56.962 de tranzacții.
-- **P2 – Modele fixe.** Ponderile A și B nu se reantrenează (excepție: S10-T6). Se verifică sha256 față de `results/result_exp5/config.json` și AUPRC-ul pe validation la p = 0 față de valoarea salvată (`atol=1e-12`).
+- **P2 – Modele fixe.** Ponderile A și B nu se reantrenează (în Exp. 10 doar varianta B a encoderului se reantrenează, în afara acestui protocol). Se verifică sha256 față de `results/result_exp5/config.json` și AUPRC-ul pe validation la p = 0 față de valoarea salvată (`atol=1e-12`).
 - **P3 – Fit doar pe train.** Orice scaler, PCA, model sau hiperparametru nou se potrivește pe train. Parametrii noi (ponderi de ansamblu, praguri, hiperparametri GBM) se aleg **doar pe validation**.
 - **P4 – Testul.** Nu se atinge în faza de dezvoltare. Fiecare configurație se **îngheață** (scrisă în `config.json` înainte) și se evaluează pe test **o singură dată**. Toate variantele evaluate pe test se raportează, nu doar cea mai bună, iar numărul total de evaluări pe test se declară în prezentare.
 - **P5 – Seeds.** Seeds `[0, 1, 2, 3, 4]`; comparații **pereche pe seed**; medie ± std (`ddof=1`); numărul de seeds cu Δ > 0; toate seeds raportate, inclusiv cele nefavorabile.
@@ -79,22 +79,25 @@ Poza cere „cele mai multe fraude la maximum 3, 5 sau 10 alarme false”. Defin
 | ID | Story | Owner | Status | Prioritate |
 |---|---|---|---|---|
 | S0 | Setup mediu și repo | Alex | DONE | MUST |
-| S8 | Fundație comună: scoruri salvate, buget de alarme, ledger de inferență | Alex | TODO | MUST |
+| S8 | Fundație comună: scoruri salvate, buget de alarme, ledger de inferență | Alex | IN REVIEW | MUST |
 | S9 | Direcția 1: ansamblu ponderat LR + VQC | Alex | TODO | SHOULD |
-| S10 | Direcția 2: LR + VQC în două etape (10a inferență, 10b validare ieftină) | Coleg | TODO | SHOULD |
-| S11 | Direcția 3: gradient boosting pe 30 de feature-uri (referință extinsă) | Coleg | TODO | COULD |
 | S12 | Integrare în prezentare și tabel comparativ | Alex | TODO | MUST |
+| E10 | **Experiment efectiv executat:** BALANCED vs FULL-TRAIN PCA pentru STAR ZZ (ablație de encoder; vezi nota de mai jos) | Alex | DONE (validation, neintegrat în `main`) | — |
 
-**Cine ce editează (fără suprapuneri):** Alex: `src/scores_io.py`, `src/alert_budget.py`, `src/report.py`, `src/cost_ledger.py`, `src/ensemble.py`, notebook-urile `exp8`, `exp9`, `docs/`. Coleg: `src/cascade.py`, `src/gbm_reference.py`, notebook-urile `exp10`, `exp11`. Dacă unul dintre voi trebuie să modifice un fișier al celuilalt, o spune pe chat înainte.
+**Nota despre numerotare (2026-10-25).** Blueprintul a folosit alte numere decât experimentele rulate efectiv. În repo: Exp. 8 = rotation fusion, Exp. 9 = ZZ feature map rar (STAR / LINEAR), iar **Exp. 10 = BALANCED PCA vs FULL-TRAIN PCA pentru STAR ZZ** (`notebooks/exp10_balanced_vs_full_train_pca.ipynb`, `results/result_exp10/`, `src/star_pca.py`). **S10 (LR + VQC în două etape) și S11 (gradient boosting) au fost eliminate din plan (2026-10-25)**, deci numele `exp10` / `exp11` nu mai sunt rezervate.
+
+**Exp. 10 (executat, doar validation, 5 seeds):** STAR ZZ fix (15 CNOT, 73 locuri de zgomot). Singura schimbare: `PCA.fit` pe tot train-ul (170.883) în loc de cele 590 echilibrate; scalerele și VQC-ul rămân pe cele 590. Rezultat negativ: la p = 0.05, AUPRC 0.622 → 0.089, recall 0.677 → 0.168, FP 16.4 → 135, în toate cele 5 seeds. Recomandare: se păstrează BALANCED PCA. Testul nu a fost folosit. Detalii: `results/result_exp10/report.md`.
+
+**Cine ce editează (fără suprapuneri):** Alex: `src/scores_io.py`, `src/alert_budget.py`, `src/report.py`, `src/cost_ledger.py`, `src/ensemble.py`, `src/star_pca.py`, notebook-urile `exp8`, `exp9`, `exp10`, `docs/`. Coleg: de redistribuit (S10 și S11 eliminate). Dacă unul dintre voi trebuie să modifice un fișier al celuilalt, o spune pe chat înainte.
 
 **Plan de timp [recomandare, scenariul pesimist: final duminică 09:00]:**
 
 | Interval (ora locală) | Alex | Coleg |
 |---|---|---|
-| 21:30–23:00 | S8 | S11-T1…T3 (nu depind de S8) |
-| 23:00–01:30 | S9 | S10a (S10-T1…T5) |
-| 01:30–03:00 | S9 final pe validation, apoi înghețare | S10b (S10-T6…T7), S11-T4 |
-| 03:00–05:00 | evaluări finale pe test (P4), tabele | idem pentru S10 și S11 |
+| 21:30–23:00 | S8 | (de redistribuit) |
+| 23:00–01:30 | S9 | (de redistribuit) |
+| 01:30–03:00 | S9 final pe validation, apoi înghețare | (de redistribuit) |
+| 03:00–05:00 | evaluări finale pe test (P4), tabele | (de redistribuit) |
 | 05:00–06:00 | S12 (slide-uri) | verificare încrucișată PR-uri |
 | 06:00 | **înghețare cod** (cu ≥ 3 h înainte de 09:00) | |
 
@@ -117,25 +120,25 @@ Ceasurile se dau înapoi la 04:00 (devine 03:00): nu conta pe ora în plus. Dac�
 
 ## S8 – Fundație comună: scoruri salvate, buget de alarme, ledger de inferență
 
-**Owner:** Alex · **Status:** TODO · **Branch:** `alex-exp8-foundation` · **Prioritate:** MUST · **Depinde de:** —
+**Owner:** Alex · **Status:** IN REVIEW · **Branch:** `alex-exp8-foundation` · **Prioritate:** MUST · **Depinde de:** —
 **Obiectiv:** o singură implementare, verificată, a încărcării scorurilor salvate, a metricii „buget de alarme” și a contabilității de cost, ca S9–S11 să se compare pe exact aceleași cifre și juriul să vadă cod curat în `src/` (nu funcții copiate între notebook-uri).
 
 **Criterii de acceptare:**
-- [ ] P1 respectat; testul nu se încarcă (doar etichetele)
-- [ ] Din scorurile salvate se reproduc, la `atol=1e-9`: AUPRC și pragul max-F1 pe validation pentru A și B la toate (seed, p) față de `results/result_exp2/val_runs.jsonl` și `results/result_exp3/val_runs.jsonl`; AUPRC și F1 pe test față de `results/result_exp5/test_runs.jsonl`
-- [ ] `src/alert_budget.py` dă aceleași TP/FP ca `pick` din Exp. 6 pe scorurile B de pe validation (verificat pe cel puțin 3 (seed, p))
-- [ ] `src/cost_ledger.py` reproduce 1.150.500 execuții de antrenare și 1.708.860 de validare pe epoci (30 epoci, 590 exemple, 56.962 validare, P = 32)
-- [ ] Verificare de independență de batch: scorul lui B pe un subset de 5.000 de tranzacții (p = 0.01, seed 0) coincide cu scorul aceleiași tranzacții în setul complet, `atol=1e-8` (necesar pentru afirmațiile de cost din S10)
-- [ ] Tabel de referință „buget de alarme” pentru A, B, C pe **validation**, k ∈ {3, 5, 10, 50}, p ∈ {0, 0.01, 0.05}, 5 seeds, medie ± std
+- [x] P1 respectat; testul nu se încarcă (doar etichetele)
+- [x] Din scorurile salvate se reproduc, la `atol=1e-9`: AUPRC și pragul max-F1 pe validation pentru A și B la toate (seed, p) față de `results/result_exp2/val_runs.jsonl` și `results/result_exp3/val_runs.jsonl`; AUPRC și F1 pe test față de `results/result_exp5/test_runs.jsonl`
+- [x] `src/alert_budget.py` dă aceleași TP/FP ca `pick` din Exp. 6 pe scorurile B de pe validation (verificat pe cel puțin 3 (seed, p))
+- [x] `src/cost_ledger.py` reproduce 1.150.500 execuții de antrenare și 1.708.860 de validare pe epoci (30 epoci, 590 exemple, 56.962 validare, P = 32)
+- [x] Verificare de independență de batch: scorul lui B pe un subset de 5.000 de tranzacții (p = 0.01, seed 0) coincide cu scorul aceleiași tranzacții în setul complet, `atol=1e-8` (necesar pentru afirmațiile de cost din S10)
+- [x] Tabel de referință „buget de alarme” pentru A, B, C pe **validation**, k ∈ {3, 5, 10, 50}, p ∈ {0, 0.01, 0.05}, 5 seeds, medie ± std
 - [ ] PR deschis; reviewer: Coleg
 
 **Tasks:**
-- [ ] S8-T1 – `src/scores_io.py`: încărcare scoruri val/test pentru A/B/C, etichete, verificare sha256 split (60 min) · owner: Alex · fișiere: `src/scores_io.py`
-- [ ] S8-T2 – `src/alert_budget.py`: `operating_points`, `threshold_at_fp_budget`, `alert_budget_table` (mutate din Exp. 6) (60 min) · owner: Alex · fișiere: `src/alert_budget.py`
-- [ ] S8-T3 – `src/report.py`: `mean_std`, tabel pereche (Δ medie ± std, seeds cu Δ > 0) (45 min) · owner: Alex · fișiere: `src/report.py`
-- [ ] S8-T4 – `src/cost_ledger.py`: cost antrenare, cost scorare pe N tranzacții, shots (45 min) · owner: Alex · fișiere: `src/cost_ledger.py`
-- [ ] S8-T5 – notebook `exp8_foundation_checks`: toate verificările de mai sus + independența de batch (75 min) · owner: Alex · fișiere: `notebooks/exp8_foundation_checks.ipynb`, `results/result_exp8/`
-- [ ] S8-T6 – tabelul de referință „buget de alarme” pe validation (45 min) · owner: Alex · fișiere: `results/result_exp8/`
+- [x] S8-T1 – `src/scores_io.py`: încărcare scoruri val/test pentru A/B/C, etichete, verificare sha256 split (60 min) · owner: Alex · fișiere: `src/scores_io.py`
+- [x] S8-T2 – `src/alert_budget.py`: `operating_points`, `threshold_at_fp_budget`, `alert_budget_table` (mutate din Exp. 6) (60 min) · owner: Alex · fișiere: `src/alert_budget.py`
+- [x] S8-T3 – `src/report.py`: `mean_std`, tabel pereche (Δ medie ± std, seeds cu Δ > 0) (45 min) · owner: Alex · fișiere: `src/report.py`
+- [x] S8-T4 – `src/cost_ledger.py`: cost antrenare, cost scorare pe N tranzacții, shots (45 min) · owner: Alex · fișiere: `src/cost_ledger.py`
+- [x] S8-T5 – notebook `exp8_foundation_checks`: toate verificările de mai sus + independența de batch (75 min) · owner: Alex · fișiere: `notebooks/exp8_foundation_checks.ipynb`, `results/result_exp8/`
+- [x] S8-T6 – tabelul de referință „buget de alarme” pe validation (45 min) · owner: Alex · fișiere: `results/result_exp8/`
 
 **Note / riscuri:**
 - Dacă `results/result_exp5/scores/` nu e în git, Alex trimite arhiva colegului (sau se regenerează: ~25–35 min după estimarea din Exp. 5).
@@ -188,111 +191,21 @@ Ceasurile se dau înapoi la 04:00 (devine 03:00): nu conta pe ora în plus. Dac�
 
 ---
 
-## S10 – Direcția 2: LR + VQC în două etape
-
-**Owner:** Coleg · **Status:** TODO · **Branch:** `coleg-exp10-two-stage` · **Prioritate:** SHOULD · **Depinde de:** S8 (S10-T1 poate începe cu `sklearn` direct)
-**Obiectiv:** să măsurăm dacă LR poate înlătura majoritatea tranzacțiilor evident legitime, astfel încât circuitul cuantic să fie rulat doar pe un subset, reducând execuțiile de scorare (criteriul „Cost” din PDF), fără să pierdem fraude față de LR singur la același buget de alarme.
-
-Story-ul are două părți independente:
-- **10a – cascadă la inferență** (hibrid, risc de conformitate, vezi secțiunea 2): LR alege candidații, B îi reordonează.
-- **10b – validare ieftină la antrenare** (conformă): LR alege pe ce tranzacții de validation se scorează VQC-ul după fiecare epocă; modelul final rămâne un VQC antrenat. Țintește componenta care costă cel mai mult în ledger: **1.708.860 de execuții de validare pe seed** vs. 1.150.500 de antrenare **[fapt: PDF și Exp. 1]**.
-
-**Ipoteze**
-- **H1 (10a) [presupunere]:** la un recall al etapei 1 de 98–99% pe validation, B reordonează candidații suficient de bine încât, la același buget de alarme (k), recall-ul final ≥ recall-ul lui LR singur, cu mult mai puține execuții cuantice.
-- **H0 (10a):** recall-ul final ≤ recall-ul lui LR singur (tavanul îl dă etapa 1; B nu adaugă informație, vezi S9), deci cascada doar economisește execuții fără câștig de detecție.
-- **H1 (10b):** alegerea epocii pe subsetul de candidați duce la aceeași epocă sau la un AUPRC pe validation complet cu diferență sub 1 std față de modelul antrenat cu validare completă, cu costul de validare redus proporțional cu fracția de candidați.
-- **H0 (10b):** epoca aleasă diferă și AUPRC-ul complet scade peste 1 std ⇒ validarea pe subset nu e sigură.
-- **Necunoscută cheie [fapt: nu o știm]:** câte tranzacții de validation rămân candidate la recall 98–99%. Tot câștigul de cost depinde de asta; se măsoară în S10-T2, nu se estimează.
-
-**Convenții (fixate înainte de rulare)**
-- LR = cel din Exp. 4/5 (antrenat pe setul 1:1 al seed-ului). Prag etapa 1 `t1` = cel mai mare prag cu recall pe validation ≥ `r1`, `r1 ∈ {0.95, 0.98, 0.99}`. `t1` se aplică neschimbat pe test.
-- Scor final pe toate tranzacțiile (necesar pentru AUPRC): candidații primesc `1 + s_B`, iar cei respinși primesc ECDF-ul scorului LR (în `[0, 1)`), deci sunt întotdeauna sub candidați. Convenția alternativă (respinșii = 0 constant) se raportează ca ablație, fiindcă AUPRC depinde de ea.
-- Costul de inferență: `n_candidați` execuții per trecere (validation și test), nu 56.962.
-- 10a reutilizează scorurile salvate ale lui B (corect doar dacă S8 confirmă independența de batch).
-
-**Ablații:** (a) `r1`; (b) convenția pentru respinși; (c) B vs A ca etapă 2; (d) etapa 2 = ansamblul din S9 (doar dacă S9 e gata); (e) 10b: antrenare cu validare completă vs. validare pe candidați.
-
-**Criterii de acceptare:**
-- [ ] P1–P10 respectate
-- [ ] Număr de candidați pe validation și pe test pentru fiecare `r1` (medie ± std pe seeds) și recall-ul real al etapei 1 pe test
-- [ ] 10a: pentru fiecare `r1`, p ∈ {0, 0.01, 0.05}: AUPRC, AUROC, precision/recall/F1/MCC la prag max-F1 pe validation, buget de alarme (k = 3, 5, 10, 50), comparate pereche cu **LR singur** și cu B singur, la același buget de alarme
-- [ ] 10a: ledger de inferență: execuții de scorare validation + test cu cascadă vs. fără, per nivel de zgomot și per seed
-- [ ] 10b: model nou antrenat pe 5 seeds cu validare pe candidați; raportat: epoca aleasă vs. Exp. 3, AUPRC pe validation **complet** la p = 0, ρ față de modelul Exp. 3 (scoruri pe test fără zgomot), ledger de validare pe epoci (execuții/seed vs. 1.708.860)
-- [ ] Configurația (`r1`, convenții) scrisă în `config.json` înainte de testul unic
-- [ ] Concluzie explicită pe H1/H0, inclusiv dacă cascada **pierde fraude reale** față de LR singur (riscul din poză)
-- [ ] Notă de conformitate: 10a hibrid; 10b VQC
-
-**Tasks:**
-- [ ] S10-T1 – `src/cascade.py`: etapa 1 (prag pe validation după recall țintă), scor final cu convenția de mai sus (60 min) · owner: Coleg · fișiere: `src/cascade.py`
-- [ ] S10-T2 – notebook `exp10`: număr de candidați vs. `r1` pe validation (cifra cheie) (45 min) · owner: Coleg · fișiere: `notebooks/exp10_two_stage.ipynb`
-- [ ] S10-T3 – 10a pe validation: metrici + buget de alarme vs. LR singur și B singur (75 min) · owner: Coleg · fișiere: `notebooks/exp10_two_stage.ipynb`
-- [ ] S10-T4 – ledger de inferență pentru cascadă (45 min) · owner: Coleg · fișiere: `results/result_exp10/`
-- [ ] S10-T5 – înghețare `r1` + evaluare unică pe test pentru 10a (60 min) · owner: Coleg · fișiere: `results/result_exp10/`
-- [ ] S10-T6 – 10b: antrenare B cu validare pe candidați (5 seeds, aceleași ponderi inițiale și ordine de batch-uri ca în Exp. 3), salvare ponderi (90 min) · owner: Coleg · fișiere: `notebooks/exp10_two_stage.ipynb`, `results/result_exp10/weights/`
-- [ ] S10-T7 – 10b: comparație pereche cu Exp. 3 pe validation, apoi test unic și ledger de validare (75 min) · owner: Coleg · fișiere: `results/result_exp10/`
-
-**Note / riscuri:**
-- Timp 10b: antrenarea fără zgomot a durat ~20–35 s/seed pentru 590 de exemple (estimare din Exp. 2); evaluările sub zgomot (15 treceri) au fost estimate la ~8–15 min în Exp. 2, deci 10b e fezabil în timp. **[fapt: estimări din notebook-uri, depind de mașină]**
-- Dacă numărul de candidați la `r1 = 0.98` e mare (de ordinul zecilor de mii), 10a nu aduce economie reală: se raportează ca rezultat negativ și se trece la 10b.
-- Modificarea setului de validare folosit pentru alegerea epocii schimbă o decizie de dezvoltare: pe test se evaluează o singură dată (P4).
-
----
-
-## S11 – Direcția 3: gradient boosting pe 30 de feature-uri (referință extinsă)
-
-**Owner:** Coleg · **Status:** TODO · **Branch:** `coleg-exp11-gbm` · **Prioritate:** COULD · **Depinde de:** S8 (doar T4; T1–T3 sunt independente)
-**Obiectiv:** să arătăm cât din golful dintre VQC și clasic vine din **model** și cât din **intrări** (doar 4 unghiuri PCA), pentru a încadra onest rezultatele cuantice (recomandarea Bowles, Ahmed, Schuld 2024, citată în PDF).
-
-**Statut [fapt]:** nu înlocuiește referința clasică obligatorie (LR pe aceleași 4 unghiuri, Exp. 4); în poză este descris tot ca „comparație extinsă, nu echivalentă cu baseline-ul oficial”.
-
-**Decizie de dependență [recomandare]:** implicit `sklearn.ensemble.HistGradientBoostingClassifier` (fără dependențe noi; sklearn e permis pentru baseline-uri). XGBoost doar dacă ambii acceptați și `requirements.txt` se modifică printr-un PR separat anunțat echipei. Înainte de a scrie cod, verifică în documentația scikit-learn semnăturile și parametrii (`class_weight`, `early_stopping`, `random_state`) pentru versiunea 1.9.1; nu mă bazez pe memorie pentru API.
-
-**Ipoteze**
-- **H1 [presupunere]:** GBM pe 30 de feature-uri depășește clar LR pe 4 unghiuri la AUPRC pe validation ⇒ intrările (PCA la 4 componente) sunt gâtuirea principală, nu circuitul.
-- **H0:** GBM pe 30 de feature-uri ≈ LR pe 4 unghiuri ⇒ 4 unghiuri conțin aproape tot semnalul disponibil.
-- **Tabel 2×2 (separă cauzele):** {LR, GBM} × {4 unghiuri, 30 de feature-uri}, același set de antrenare și aceeași evaluare.
-
-**Variante de date de antrenare (fixate înainte):** (a) setul 1:1 al seed-ului (590 de exemple, la fel ca VQC); (b) tot train-ul (170.883 de rânduri) cu ponderare de clase. Hiperparametri: grilă mică, aleasă doar pe validation.
-
-**Cost:** 0 execuții cuantice; antrenare pe CPU. Se raportează timpul de antrenare, separat de ledger.
-
-**Criterii de acceptare:**
-- [ ] P1, P3, P4, P5, P6, P8, P9, P10 respectate (P2, P7 nu se aplică: nu există circuit)
-- [ ] GBM antrenat doar pe train; orice scalare/selecție fitată pe train
-- [ ] Tabel 2×2 pe validation (medie ± std, 5 seeds) și apoi pe test (o singură dată, configurație înghețată)
-- [ ] GBM și LR raportate la **aceeași** valoare pentru toate p (modele clasice, fără zgomot cuantic), cu etichetă clară „referință extinsă, nu cerută de Task 2”
-- [ ] Buget de alarme (k = 3, 5, 10, 50) pentru GBM și LR
-- [ ] Concluzie scrisă: de unde vine golful (model vs. intrări), cu limitele (98 de fraude pe test)
-- [ ] Dacă se adaugă dependențe: PR separat pentru `requirements.txt`, anunțat echipei
-
-**Tasks:**
-- [ ] S11-T1 – `src/gbm_reference.py`: antrenare GBM pe 30 de feature-uri (varianta a și b), seed fix (60 min) · owner: Coleg · fișiere: `src/gbm_reference.py`
-- [ ] S11-T2 – GBM pe cele 4 unghiuri ale aceluiași `AngleEncoder` (reutilizează encoderul din Exp. 4/5) și LR pe 30 de feature-uri, pentru tabelul 2×2 (60 min) · owner: Coleg · fișiere: `notebooks/exp11_gradient_boosting.ipynb`
-- [ ] S11-T3 – grilă mică de hiperparametri pe validation, fără a atinge testul (45 min) · owner: Coleg · fișiere: `notebooks/exp11_gradient_boosting.ipynb`
-- [ ] S11-T4 – buget de alarme + înghețare + evaluare unică pe test (60 min) · owner: Coleg · fișiere: `results/result_exp11/`
-- [ ] S11-T5 – **(COULD, doar dacă mai e timp)** alegerea celor 4 intrări ale VQC după importanța din GBM (calculată pe train), reantrenare B pe noile intrări, LR de referință pe **aceleași** intrări noi, evaluare sub zgomot pe validation (120 min) · owner: Coleg · fișiere: `notebooks/exp11_gradient_boosting.ipynb`
-
-**Note / riscuri:**
-- T5 schimbă intrările, deci și LR de referință trebuie refăcută pe ele (altfel violează „aceleași intrări”). Pe test se evaluează o singură dată.
-- Dacă H0 iese adevărat, rezultatul se prezintă ca atare: „4 unghiuri nu sunt gâtuirea”.
-
----
-
 ## S12 – Integrare în prezentare și tabel comparativ
 
-**Owner:** Alex · **Status:** TODO · **Branch:** `alex-s12-slides` · **Prioritate:** MUST · **Depinde de:** S8 (+ S9, S10, S11 în măsura în care sunt gata)
+**Owner:** Alex · **Status:** TODO · **Branch:** `alex-s12-slides` · **Prioritate:** MUST · **Depinde de:** S8 (+ S9 și Exp. 10 în măsura în care sunt gata)
 **Obiectiv:** o oră pentru slide-urile care acoperă extensiile, cu cifre luate **din fișierele de rezultate**, nu rescrise de mână.
 
 **Criterii de acceptare:**
-- [ ] Un tabel unic pe test: A, B, LR și fiecare extensie finalizată (S9, S10a, S10b, S11), la p = 0, 0.01, 0.05: AUPRC, ρ (unde are sens), F1, MCC, buget de alarme; medie ± std pe 5 seeds
-- [ ] Un slide „Ce nu a mers”: Exp. 7 (ansatz redus) și rezultatele negative din S9/S10/S11, dacă apar
-- [ ] Un slide de cost: ledger A, B, cascadă (10a), validare ieftină (10b), cu execuții și shots
+- [ ] Un tabel unic pe test: A, B, LR și fiecare extensie finalizată (S9, Exp. 10), la p = 0, 0.01, 0.05: AUPRC, ρ (unde are sens), F1, MCC, buget de alarme; medie ± std pe 5 seeds
+- [ ] Un slide „Ce nu a mers”: Exp. 7 (ansatz redus) și rezultatele negative din S9 și Exp. 10 (FULL-TRAIN PCA), dacă apar
+- [ ] Un slide de cost: ledger A, B și STAR (Exp. 9–10), cu execuții și shots
 - [ ] Menționat numărul total de evaluări pe test (Exp. 5 + extensii) și faptul că testul a fost consultat în Exp. 5
 - [ ] Marcat clar în prezentare ce este „model VQC” și ce este „analiză hibridă/clasică”
-- [ ] Citări: Dinuț et al. (2026), Bowles, Ahmed, Schuld (2024) (pentru S11)
+- [ ] Citări: Dinuț et al. (2026)
 
 **Tasks:**
-- [ ] S12-T1 – script care generează tabelul final din `results/result_exp5/`, `result_exp9/`, `result_exp10/`, `result_exp11/` (60 min) · owner: Alex · fișiere: `docs/`
+- [ ] S12-T1 – script care generează tabelul final din `results/result_exp5/`, `result_exp9/`, `result_exp10/` (60 min) · owner: Alex · fișiere: `docs/`
 - [ ] S12-T2 – slide-uri pentru extensii și ce nu a mers (60 min) · owner: Alex · fișiere: `docs/`
 
 ---
@@ -313,8 +226,8 @@ Story-ul are două părți independente:
 |---|---|---|
 | 2026-10-24 | Raport 1:1 pentru antrenare | Ales în Exp. 1 și păstrat în Exp. 2–7 |
 | 2026-10-24 | B (ZZ×1, ansatz×3, 32 param.) = soluția principală | Exp. 5: robustețe mult mai bună decât A; Exp. 7 a respins ansatz×2 |
-| 2026-10-24 | Extensiile S9–S11 sunt analize suplimentare, nu înlocuiesc îmbunătățirea obligatorie | Risc de conformitate (secțiunea 2) |
-| 2026-10-24 | **PROPUSĂ:** GBM implicit prin scikit-learn, nu XGBoost | Fără dependențe noi |
+| 2026-10-24 | Extensiile S9 (și fostele S10–S11) sunt analize suplimentare, nu înlocuiesc îmbunătățirea obligatorie | Risc de conformitate (secțiunea 2) |
+| 2026-10-25 | S10 (cascadă LR + VQC) și S11 (GBM) eliminate din plan; Exp. 10 = BALANCED vs FULL-TRAIN PCA | Decizie Alex; fără GBM, întrebarea cu XGBoost devine irelevantă |
 | 2026-10-24 | **PROPUSĂ:** testul se folosește o singură dată per configurație înghețată | Testul a fost deja consultat în Exp. 5 |
 
 ## Jurnal de lucru
@@ -322,3 +235,4 @@ Story-ul are două părți independente:
 | Data/ora | Cine | Ce s-a făcut | Story/Task | PR |
 |---|---|---|---|---|
 | 2026-10-24 21:xx | Alex + Claude | Analiza Exp. 1–7, definirea S8–S12 | S8–S12 | — |
+| 2026-10-25 | Alex + Claude | Exp. 10 executat: BALANCED vs FULL-TRAIN PCA pe STAR ZZ (reproducere Exp. 9 verificată, B reantrenat, 13 verificări trecute); rezultat negativ pentru B | E10 | — |

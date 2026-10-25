@@ -1,0 +1,71 @@
+{
+  "experiment": "balanced_vs_full_train_pca_star_zz",
+  "architecture": "STAR ZZ from Exp. 9 (pairs (0,1),(0,2),(0,3); feature map x1, ansatz x3; 4 qubits; 32 params; readout PauliZ(0); score (1-expval)/2)",
+  "variant_A": "AngleEncoder: StandardScaler(Time, Amount) + PCA(4) + MinMaxScaler(0, pi), all fitted on the 590 balanced examples; transform clips to [0, pi]",
+  "variant_B": "same StandardScaler (590) ; PCA(4).fit on all 170,883 train rows standardised with that scaler ; MinMaxScaler fitted on the B-PCA projections of the same 590 ; same clipping",
+  "vqc_training_set": "590 balanced examples (undersample(X_train, y_train, seed)); the full train set is used only for PCA.fit of variant B",
+  "A_weights": "results/result_exp9/weights/star (reproduced by retraining, not retrained for the results)",
+  "B_weights": "retrained from scratch (results/result_exp10/weights/full_train)",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "noise_levels": [
+    0.0,
+    0.001,
+    0.01,
+    0.05
+  ],
+  "epochs": 30,
+  "batch_size": 32,
+  "learning_rate": 0.05,
+  "optimizer": "Adam",
+  "loss": "BCELoss",
+  "init": "init_weights(seed), identical for A and B",
+  "shuffle": "torch.Generator().manual_seed(seed), identical for A and B (sha256 verified)",
+  "epoch_selection": "best validation AUPRC at p = 0 (same rule for A and B)",
+  "noise_model": "default.mixed, decomposition into NATIVE_GATES, DepolarizingChannel(p) after every gate on every wire it touches",
+  "threshold": "max F1 on validation scores at the same p (selected and evaluated on the same set: optimistic)",
+  "recall_targets_exploratory": {
+    "targets": [
+      0.7,
+      0.75,
+      0.8,
+      0.85
+    ],
+    "rule": "highest PR-curve threshold with recall >= target",
+    "excess_fp_flag": "precision < 0.1"
+  },
+  "evaluation_set": "validation only (test not loaded)",
+  "split_sha256": "0ea3d5c10fe74035b5c5d425544fc9596922febde8efbcc22f44c4e64c186a68",
+  "split": "split_indices.npz (verified against official reconstruction and Exp. 5 hash)",
+  "tolerances": {
+    "exact": 1e-12,
+    "reproduction_vs_exp9": 1e-09
+  },
+  "shots_per_execution_hypothetical": 1024,
+  "versions": {
+    "pennylane": "0.45.1",
+    "torch": "2.14.1",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.4"
+  },
+  "code": "src/star_pca.py",
+  "checks": [
+    "PCA_A.n_samples_ == 590 (5 seeds; sklearn 1.9: PCA nu are n_samples_seen_, doar IncrementalPCA)",
+    "PCA_B.n_samples_ == 170883 (5 seeds)",
+    "StandardScaler identic A/B; MinMaxScaler fitat pe aceleași 590 proiectate",
+    "unghiurile A: ponderile Exp. 9 dau AUPRC-ul salvat la 1e-12 (hash-ul brut al octeților diferă de Exp. 9)",
+    "refit B pe același seed = aceleași unghiuri (bit cu bit)",
+    "train/validation disjuncte; PCA_B vede doar indici din train; testul nu e încărcat",
+    "STAR: 15 CNOT, 73 locuri de zgomot, 32 parametri; secvența de porți = Exp. 9",
+    "A: reantrenare = ponderile și istoricul Exp. 9 (5 seeds: aceeași epocă, istoric < 1e-9, ponderi < 1e-6)",
+    "aceeași inițializare și aceeași ordine a mini-batch-urilor pentru A și B (sha256, 5 seeds)",
+    "VQC antrenat pe exact 590 exemple; tot train-ul intră doar în PCA.fit al lui B",
+    "default.mixed la p = 0 = default.qubit (2000 tranzacții, A și B)",
+    "A sub zgomot = Exp. 9 STAR (AUPRC, prag, TP, FP, F1, MAE, ρ; 20 evaluări; max eroare 4.0e-15)"
+  ]
+}
