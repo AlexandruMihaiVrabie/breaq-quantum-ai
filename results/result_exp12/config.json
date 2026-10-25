@@ -1,0 +1,119 @@
+{
+  "experiment": "final_test_evaluation_exp12",
+  "type": "evaluation only: no training, no recalibration, no model selection",
+  "models": {
+    "Z0Z1": {
+      "label": "STAR + Z₀Z₁ (candidat, Exp. 11)",
+      "observable": "qml.PauliZ(0) @ qml.PauliZ(1)",
+      "weights": "results/result_exp11/weights/Z0Z1",
+      "selected_by": "Exp. 11 decision rule (results/result_exp11/decision.csv), on validation, before Exp. 12"
+    },
+    "Z0": {
+      "label": "STAR + Z₀ (Exp. 9)",
+      "observable": "qml.PauliZ(0)",
+      "weights": "results/result_exp9/weights/star"
+    },
+    "LR": {
+      "label": "regresie logistică (Exp. 4)",
+      "config": "LogisticRegression(max_iter=1000) on the same 4 angles; coefficients verified against Exp. 4"
+    },
+    "A": {
+      "label": "A: VQC ZZ ×2 (Exp. 5, istoric)",
+      "source": "results/result_exp5/test_detailed.csv (historical, not re-run)"
+    }
+  },
+  "circuit": {
+    "pairs": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "ansatz_reps": 3,
+    "qubiți": 4,
+    "porți native": 58,
+    "CNOT": 15,
+    "locuri de zgomot": 73,
+    "parametri": 32,
+    "native_op_order": "= results/result_exp11/config.json"
+  },
+  "score": "s(x) = (1 - <O>) / 2",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "noise_levels": [
+    0.0,
+    0.001,
+    0.01,
+    0.05
+  ],
+  "noise_model": "noisy_qnode: NATIVE_GATES decomposition, DepolarizingChannel(p) after every gate on every wire, default.mixed, exact expectations",
+  "threshold_rule": "max F1 on validation at the same p (Exp. 11 saved validation scores); test prediction = score >= threshold",
+  "thresholds_sha256": "abfee202bef1afff0770478e378c63384c716a8a879f5a373ee3e339299296e3",
+  "thresholds_frozen_before_test_scoring": true,
+  "encoder": "AngleEncoder(4, seed) fitted on undersample(X_train, y_train, seed) 1:1 (590 rows); transform only on test",
+  "encoder_params_sha256": {
+    "0": "2bcb9b73f2e7f2e18b8ea92e8129ae8c855079ab29e0c869678a51bd125421c5",
+    "1": "2b690c4b9281d43732dec447cef5892dd6d289585ec5e67f9030249691194f29",
+    "2": "dc0234779cd08f3f0544b51f7d77aaced829edf46b3c1d24b511e9fc3db7a404",
+    "3": "cd3a5069ccd81ce776548d1ad681f2c8e81c4a7cfd4f92bb977e8e6c081f0a91",
+    "4": "6f707a67cde8b7b8720dfca7a4f0b02f2fd878899607ed3231a58e15c396a5ca"
+  },
+  "angles_train_val_sha256": {
+    "0": "49f0208c0c5a4e326d11323e01831a8211822ee0c78577e36727c853d912e7d5",
+    "1": "cfc8fc29e2932f67ee2d237ec115ea02d0b92d0f9b3effc0963756a8852cd3b4",
+    "2": "742edd26f6ac39dc659e201fcae7174a24253ea880c6af790a607d25247f2433",
+    "3": "a750a894f58c4977203a13f3906561a3292a04d664bc20844029f89b1a919a27",
+    "4": "0a8fde470effbb86de7b328e9bc8e679493a99e172e0b0e700b5203475654ff1"
+  },
+  "angles_test_sha256": {
+    "0": "5d063d09a8c43d51b1cdcf50e869ef5d6691b4d2a8879e85f7e65658aff799b9",
+    "1": "e4193d3d0f0ae576ec7611078092f6e5d57087a33d7512291754e67daed7ce54",
+    "2": "1d9884213f1d341444989c2a89de9f89a274287c9664167c7b0b86385f8816e0",
+    "3": "b373259386f5976116ff213ba32d5b85472304415097e9ad8ad28415094c1bce",
+    "4": "0ce6777a90412521c53a46bd4f4c4ab0d0e44cd61a0250e2a53f72d003258dfc"
+  },
+  "weights_sha256": {
+    "Z0Z1/seed_0": "6600c3e188a82d632a508a69bdb8916c66d80e5f9f29536032c5a45aa91a1543",
+    "Z0/seed_0": "16829d1aad325c6521ab3ef054ff6ffdfe19fd91b575e68c9cdbe036a56b8841",
+    "Z0Z1/seed_1": "3247e541f0a95c84a72317328fcb86d35a3dfa067333e2eac38799361f9bab00",
+    "Z0/seed_1": "33f427fa737c79578670b727c2ff0601a1fd2aede147bf8f033597b43f3adbaa",
+    "Z0Z1/seed_2": "9f35d4632049042f87a98d86a24d3c677a067b358aeb978f74983b3d2cb9ebd4",
+    "Z0/seed_2": "b5f077aafeb4a3fa0640d966b23a8c2052feb1e17aa285f6e3666869313031be",
+    "Z0Z1/seed_3": "c866144d6d01f872fa4d3ae6458c68c2d26242174af87f5c7020d0d9b16c5722",
+    "Z0/seed_3": "6ef0620891f9bb6e870e92f8aa5aa69f2ed2c78c34561f436f8795a49f2bd847",
+    "Z0Z1/seed_4": "d3e9192f1700111e810e48a963f35c80b3cfefb57f8c1fd1df0841450c947392",
+    "Z0/seed_4": "94e8079e95e10db277850acf0a5ec6abb8caf893bbffd05ab36d452dba405132"
+  },
+  "split": "split_indices.npz (verified against official reconstruction)",
+  "split_sha256_arrays_exp11_convention": "1aa0c2d8334325e2e32e79585237f644849f9639c85eed8725db27e5d463e9d3",
+  "split_sha256_file_exp5_convention": "0ea3d5c10fe74035b5c5d425544fc9596922febde8efbcc22f44c4e64c186a68",
+  "test_prior_use": "The test set was already used in Exp. 5 (models A = Exp. 2 and B = Exp. 3). This evaluation is NOT fully blind / independent of the exploratory process.",
+  "n_test": 56962,
+  "n_test_frauds": 98,
+  "shots_per_execution_nominal": 1024,
+  "bootstrap": {
+    "n": 1000,
+    "seed": 42,
+    "type": "stratified paired over test transactions, descriptive only"
+  },
+  "torch_default_dtype": "torch.float64",
+  "versions": {
+    "pennylane": "0.45.1",
+    "torch": "2.14.1+cpu",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.4"
+  }
+}

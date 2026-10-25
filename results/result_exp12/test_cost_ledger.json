@@ -1,0 +1,82 @@
+{
+  "convention": "exact density-matrix simulation (shots=None): nominal shots are a hardware estimate, NOT drawn by the simulator",
+  "shots_per_execution_nominal": 1024,
+  "test_inference_exp12": {
+    "Z0Z1": {
+      "transactions": 56962,
+      "executions_per_transaction": 1,
+      "cnot_per_execution": 15,
+      "noise_locations_per_execution": 73,
+      "executions_per_seed_per_p": 56962,
+      "executions_per_seed_4_p": 227848,
+      "executions_5_seeds_4_p": 1139240,
+      "nominal_shots_5_seeds_4_p": 1166581760,
+      "real_device_one_noise_level_executions_5_seeds": 284810,
+      "real_device_one_noise_level_nominal_shots_5_seeds": 291645440,
+      "simulator_seconds_total": 244.94100760000583
+    },
+    "Z0": {
+      "transactions": 56962,
+      "executions_per_transaction": 1,
+      "cnot_per_execution": 15,
+      "noise_locations_per_execution": 73,
+      "executions_per_seed_per_p": 56962,
+      "executions_per_seed_4_p": 227848,
+      "executions_5_seeds_4_p": 1139240,
+      "nominal_shots_5_seeds_4_p": 1166581760,
+      "real_device_one_noise_level_executions_5_seeds": 284810,
+      "real_device_one_noise_level_nominal_shots_5_seeds": 291645440,
+      "simulator_seconds_total": 274.09266659998684
+    }
+  },
+  "test_inference_same_cost_Z0_vs_Z0Z1": "identical: same circuit (58 gates, 15 CNOT, 73 noise locations), 1 execution per transaction; Z0 and Z0Z1 are read from the same bitstrings, so the shots are not doubled",
+  "validation_in_exp12": {
+    "new_protocol_executions": 0,
+    "note": "thresholds reuse the Exp. 11 validation scores (already counted in the Exp. 11 ledger)",
+    "verification_only_simulated_rows": 60000,
+    "exp5_reproduction_check_simulated_rows": 314810
+  },
+  "training_historical_not_repeated": {
+    "Z0Z1": {
+      "status": "trained and evaluated in Exp. 11",
+      "executions_per_example_nominal": 65,
+      "executions_per_example_tracker": 53.0,
+      "parameters_in_wire_cone": 26,
+      "executions_per_seed": {
+        "train_forward_plus_parameter_shift_nominal_1+2P": 1150500,
+        "train_forward_plus_parameter_shift_tracker": 938100.0,
+        "validation_after_each_epoch_p0": 1708860,
+        "validation_p0_selected_checkpoint": 56962,
+        "validation_noisy_p0.001_0.01_0.05": 170886
+      },
+      "total_per_seed_nominal": 3087208,
+      "total_per_seed_tracker": 2874808.0,
+      "total_5_seeds_tracker": 14374040.0,
+      "shots_5_seeds_tracker": 14719016960.0
+    },
+    "Z0": {
+      "status": "reused from Exp. 9 (training not repeated; noisy validation recomputed and verified)",
+      "executions_per_example_nominal": 65,
+      "executions_per_example_tracker": 41.0,
+      "parameters_in_wire_cone": 20,
+      "executions_per_seed": {
+        "train_forward_plus_parameter_shift_nominal_1+2P": 1150500,
+        "train_forward_plus_parameter_shift_tracker": 725700.0,
+        "validation_after_each_epoch_p0": 1708860,
+        "validation_p0_selected_checkpoint": 56962,
+        "validation_noisy_p0.001_0.01_0.05": 170886
+      },
+      "total_per_seed_nominal": 3087208,
+      "total_per_seed_tracker": 2662408.0,
+      "total_5_seeds_tracker": 13312040.0,
+      "shots_5_seeds_tracker": 13631528960.0
+    }
+  },
+  "training_gradient_cost_differs": {
+    "Z0Z1": 53.0,
+    "Z0": 41.0
+  },
+  "training_tracker_total_Z0Z1_vs_Z0_relative": 0.07977740451501036,
+  "finite_shot_analysis": "separate protocol (Exp. 11, results/result_exp11/finite_shot_cost_ledger.json); not part of these exact-expectation metrics",
+  "logistic_regression": "classical CPU, 0 quantum executions"
+}
