@@ -1,0 +1,318 @@
+{
+  "note": "hardware scenarios derived from the Exp. 11 execution counts; the official exact-simulation ledger (cost_ledger.json) is unchanged; Z0Z1 uses the same shots per execution as Z0 (both bits from one computational-basis measurement)",
+  "shot_levels": [
+    1024,
+    4096,
+    10000,
+    32768,
+    100000
+  ],
+  "reference_budget_shots_per_execution": 1024,
+  "observables": {
+    "Z0": {
+      "executions_per_seed": {
+        "training_parameter_shift_tracker": 725700.0,
+        "validation_each_epoch": 1708860,
+        "validation_checkpoint": 56962,
+        "validation_noisy_3_levels": 170886
+      },
+      "executions_per_example_gradient_tracker": 41.0,
+      "per_shot_level": {
+        "1024": {
+          "shots_per_execution": 1024,
+          "inference_shots_per_transaction": 1024,
+          "training_shots_per_seed": 743116800.0,
+          "validation_and_inference_shots_per_seed": 1983188992,
+          "total_shots_per_seed": 2726305792.0,
+          "total_shots_5_seeds": 13631528960.0,
+          "inference_shots_full_validation_one_noise_level": 58329088,
+          "factor_vs_1024": 1.0
+        },
+        "4096": {
+          "shots_per_execution": 4096,
+          "inference_shots_per_transaction": 4096,
+          "training_shots_per_seed": 2972467200.0,
+          "validation_and_inference_shots_per_seed": 7932755968,
+          "total_shots_per_seed": 10905223168.0,
+          "total_shots_5_seeds": 54526115840.0,
+          "inference_shots_full_validation_one_noise_level": 233316352,
+          "factor_vs_1024": 4.0
+        },
+        "10000": {
+          "shots_per_execution": 10000,
+          "inference_shots_per_transaction": 10000,
+          "training_shots_per_seed": 7257000000.0,
+          "validation_and_inference_shots_per_seed": 19367080000,
+          "total_shots_per_seed": 26624080000.0,
+          "total_shots_5_seeds": 133120400000.0,
+          "inference_shots_full_validation_one_noise_level": 569620000,
+          "factor_vs_1024": 9.765625
+        },
+        "32768": {
+          "shots_per_execution": 32768,
+          "inference_shots_per_transaction": 32768,
+          "training_shots_per_seed": 23779737600.0,
+          "validation_and_inference_shots_per_seed": 63462047744,
+          "total_shots_per_seed": 87241785344.0,
+          "total_shots_5_seeds": 436208926720.0,
+          "inference_shots_full_validation_one_noise_level": 1866530816,
+          "factor_vs_1024": 32.0
+        },
+        "100000": {
+          "shots_per_execution": 100000,
+          "inference_shots_per_transaction": 100000,
+          "training_shots_per_seed": 72570000000.0,
+          "validation_and_inference_shots_per_seed": 193670800000,
+          "total_shots_per_seed": 266240800000.0,
+          "total_shots_5_seeds": 1331204000000.0,
+          "inference_shots_full_validation_one_noise_level": 5696200000,
+          "factor_vs_1024": 97.65625
+        }
+      }
+    },
+    "Z1": {
+      "executions_per_seed": {
+        "training_parameter_shift_tracker": 867300.0,
+        "validation_each_epoch": 1708860,
+        "validation_checkpoint": 56962,
+        "validation_noisy_3_levels": 170886
+      },
+      "executions_per_example_gradient_tracker": 49.0,
+      "per_shot_level": {
+        "1024": {
+          "shots_per_execution": 1024,
+          "inference_shots_per_transaction": 1024,
+          "training_shots_per_seed": 888115200.0,
+          "validation_and_inference_shots_per_seed": 1983188992,
+          "total_shots_per_seed": 2871304192.0,
+          "total_shots_5_seeds": 14356520960.0,
+          "inference_shots_full_validation_one_noise_level": 58329088,
+          "factor_vs_1024": 1.0
+        },
+        "4096": {
+          "shots_per_execution": 4096,
+          "inference_shots_per_transaction": 4096,
+          "training_shots_per_seed": 3552460800.0,
+          "validation_and_inference_shots_per_seed": 7932755968,
+          "total_shots_per_seed": 11485216768.0,
+          "total_shots_5_seeds": 57426083840.0,
+          "inference_shots_full_validation_one_noise_level": 233316352,
+          "factor_vs_1024": 4.0
+        },
+        "10000": {
+          "shots_per_execution": 10000,
+          "inference_shots_per_transaction": 10000,
+          "training_shots_per_seed": 8673000000.0,
+          "validation_and_inference_shots_per_seed": 19367080000,
+          "total_shots_per_seed": 28040080000.0,
+          "total_shots_5_seeds": 140200400000.0,
+          "inference_shots_full_validation_one_noise_level": 569620000,
+          "factor_vs_1024": 9.765625
+        },
+        "32768": {
+          "shots_per_execution": 32768,
+          "inference_shots_per_transaction": 32768,
+          "training_shots_per_seed": 28419686400.0,
+          "validation_and_inference_shots_per_seed": 63462047744,
+          "total_shots_per_seed": 91881734144.0,
+          "total_shots_5_seeds": 459408670720.0,
+          "inference_shots_full_validation_one_noise_level": 1866530816,
+          "factor_vs_1024": 32.0
+        },
+        "100000": {
+          "shots_per_execution": 100000,
+          "inference_shots_per_transaction": 100000,
+          "training_shots_per_seed": 86730000000.0,
+          "validation_and_inference_shots_per_seed": 193670800000,
+          "total_shots_per_seed": 280400800000.0,
+          "total_shots_5_seeds": 1402004000000.0,
+          "inference_shots_full_validation_one_noise_level": 5696200000,
+          "factor_vs_1024": 97.65625
+        }
+      }
+    },
+    "Z2": {
+      "executions_per_seed": {
+        "training_parameter_shift_tracker": 938100.0,
+        "validation_each_epoch": 1708860,
+        "validation_checkpoint": 56962,
+        "validation_noisy_3_levels": 170886
+      },
+      "executions_per_example_gradient_tracker": 53.0,
+      "per_shot_level": {
+        "1024": {
+          "shots_per_execution": 1024,
+          "inference_shots_per_transaction": 1024,
+          "training_shots_per_seed": 960614400.0,
+          "validation_and_inference_shots_per_seed": 1983188992,
+          "total_shots_per_seed": 2943803392.0,
+          "total_shots_5_seeds": 14719016960.0,
+          "inference_shots_full_validation_one_noise_level": 58329088,
+          "factor_vs_1024": 1.0
+        },
+        "4096": {
+          "shots_per_execution": 4096,
+          "inference_shots_per_transaction": 4096,
+          "training_shots_per_seed": 3842457600.0,
+          "validation_and_inference_shots_per_seed": 7932755968,
+          "total_shots_per_seed": 11775213568.0,
+          "total_shots_5_seeds": 58876067840.0,
+          "inference_shots_full_validation_one_noise_level": 233316352,
+          "factor_vs_1024": 4.0
+        },
+        "10000": {
+          "shots_per_execution": 10000,
+          "inference_shots_per_transaction": 10000,
+          "training_shots_per_seed": 9381000000.0,
+          "validation_and_inference_shots_per_seed": 19367080000,
+          "total_shots_per_seed": 28748080000.0,
+          "total_shots_5_seeds": 143740400000.0,
+          "inference_shots_full_validation_one_noise_level": 569620000,
+          "factor_vs_1024": 9.765625
+        },
+        "32768": {
+          "shots_per_execution": 32768,
+          "inference_shots_per_transaction": 32768,
+          "training_shots_per_seed": 30739660800.0,
+          "validation_and_inference_shots_per_seed": 63462047744,
+          "total_shots_per_seed": 94201708544.0,
+          "total_shots_5_seeds": 471008542720.0,
+          "inference_shots_full_validation_one_noise_level": 1866530816,
+          "factor_vs_1024": 32.0
+        },
+        "100000": {
+          "shots_per_execution": 100000,
+          "inference_shots_per_transaction": 100000,
+          "training_shots_per_seed": 93810000000.0,
+          "validation_and_inference_shots_per_seed": 193670800000,
+          "total_shots_per_seed": 287480800000.0,
+          "total_shots_5_seeds": 1437404000000.0,
+          "inference_shots_full_validation_one_noise_level": 5696200000,
+          "factor_vs_1024": 97.65625
+        }
+      }
+    },
+    "Z3": {
+      "executions_per_seed": {
+        "training_parameter_shift_tracker": 938100.0,
+        "validation_each_epoch": 1708860,
+        "validation_checkpoint": 56962,
+        "validation_noisy_3_levels": 170886
+      },
+      "executions_per_example_gradient_tracker": 53.0,
+      "per_shot_level": {
+        "1024": {
+          "shots_per_execution": 1024,
+          "inference_shots_per_transaction": 1024,
+          "training_shots_per_seed": 960614400.0,
+          "validation_and_inference_shots_per_seed": 1983188992,
+          "total_shots_per_seed": 2943803392.0,
+          "total_shots_5_seeds": 14719016960.0,
+          "inference_shots_full_validation_one_noise_level": 58329088,
+          "factor_vs_1024": 1.0
+        },
+        "4096": {
+          "shots_per_execution": 4096,
+          "inference_shots_per_transaction": 4096,
+          "training_shots_per_seed": 3842457600.0,
+          "validation_and_inference_shots_per_seed": 7932755968,
+          "total_shots_per_seed": 11775213568.0,
+          "total_shots_5_seeds": 58876067840.0,
+          "inference_shots_full_validation_one_noise_level": 233316352,
+          "factor_vs_1024": 4.0
+        },
+        "10000": {
+          "shots_per_execution": 10000,
+          "inference_shots_per_transaction": 10000,
+          "training_shots_per_seed": 9381000000.0,
+          "validation_and_inference_shots_per_seed": 19367080000,
+          "total_shots_per_seed": 28748080000.0,
+          "total_shots_5_seeds": 143740400000.0,
+          "inference_shots_full_validation_one_noise_level": 569620000,
+          "factor_vs_1024": 9.765625
+        },
+        "32768": {
+          "shots_per_execution": 32768,
+          "inference_shots_per_transaction": 32768,
+          "training_shots_per_seed": 30739660800.0,
+          "validation_and_inference_shots_per_seed": 63462047744,
+          "total_shots_per_seed": 94201708544.0,
+          "total_shots_5_seeds": 471008542720.0,
+          "inference_shots_full_validation_one_noise_level": 1866530816,
+          "factor_vs_1024": 32.0
+        },
+        "100000": {
+          "shots_per_execution": 100000,
+          "inference_shots_per_transaction": 100000,
+          "training_shots_per_seed": 93810000000.0,
+          "validation_and_inference_shots_per_seed": 193670800000,
+          "total_shots_per_seed": 287480800000.0,
+          "total_shots_5_seeds": 1437404000000.0,
+          "inference_shots_full_validation_one_noise_level": 5696200000,
+          "factor_vs_1024": 97.65625
+        }
+      }
+    },
+    "Z0Z1": {
+      "executions_per_seed": {
+        "training_parameter_shift_tracker": 938100.0,
+        "validation_each_epoch": 1708860,
+        "validation_checkpoint": 56962,
+        "validation_noisy_3_levels": 170886
+      },
+      "executions_per_example_gradient_tracker": 53.0,
+      "per_shot_level": {
+        "1024": {
+          "shots_per_execution": 1024,
+          "inference_shots_per_transaction": 1024,
+          "training_shots_per_seed": 960614400.0,
+          "validation_and_inference_shots_per_seed": 1983188992,
+          "total_shots_per_seed": 2943803392.0,
+          "total_shots_5_seeds": 14719016960.0,
+          "inference_shots_full_validation_one_noise_level": 58329088,
+          "factor_vs_1024": 1.0
+        },
+        "4096": {
+          "shots_per_execution": 4096,
+          "inference_shots_per_transaction": 4096,
+          "training_shots_per_seed": 3842457600.0,
+          "validation_and_inference_shots_per_seed": 7932755968,
+          "total_shots_per_seed": 11775213568.0,
+          "total_shots_5_seeds": 58876067840.0,
+          "inference_shots_full_validation_one_noise_level": 233316352,
+          "factor_vs_1024": 4.0
+        },
+        "10000": {
+          "shots_per_execution": 10000,
+          "inference_shots_per_transaction": 10000,
+          "training_shots_per_seed": 9381000000.0,
+          "validation_and_inference_shots_per_seed": 19367080000,
+          "total_shots_per_seed": 28748080000.0,
+          "total_shots_5_seeds": 143740400000.0,
+          "inference_shots_full_validation_one_noise_level": 569620000,
+          "factor_vs_1024": 9.765625
+        },
+        "32768": {
+          "shots_per_execution": 32768,
+          "inference_shots_per_transaction": 32768,
+          "training_shots_per_seed": 30739660800.0,
+          "validation_and_inference_shots_per_seed": 63462047744,
+          "total_shots_per_seed": 94201708544.0,
+          "total_shots_5_seeds": 471008542720.0,
+          "inference_shots_full_validation_one_noise_level": 1866530816,
+          "factor_vs_1024": 32.0
+        },
+        "100000": {
+          "shots_per_execution": 100000,
+          "inference_shots_per_transaction": 100000,
+          "training_shots_per_seed": 93810000000.0,
+          "validation_and_inference_shots_per_seed": 193670800000,
+          "total_shots_per_seed": 287480800000.0,
+          "total_shots_5_seeds": 1437404000000.0,
+          "inference_shots_full_validation_one_noise_level": 5696200000,
+          "factor_vs_1024": 97.65625
+        }
+      }
+    }
+  }
+}
