@@ -1,0 +1,118 @@
+{
+  "nota": "Execuțiile și shots-urile sunt nominale (estimare pentru hardware). Simularea a folosit valori de așteptare exacte, fără shots. Circuitul STAR este identic în A și B.",
+  "circuit": {
+    "CNOT": 15,
+    "locuri_de_zgomot": 73,
+    "parametri": 32,
+    "porti_native": 58,
+    "executii_per_exemplu_parameter_shift": 65
+  },
+  "shots_ipotetice_per_executie": 1024,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "variante": {
+    "balanced": {
+      "executii_per_seed": {
+        "antrenare (forward + parameter shift, nominal)": 1150500,
+        "validare după fiecare epocă (p = 0)": 1708860,
+        "validation p = 0, ponderile alese": 56962,
+        "validation sub zgomot (p = 0.001, 0.01, 0.05)": 170886
+      },
+      "executii_total_per_seed": 3087208,
+      "executii_total_5_seeds": 15436040,
+      "shots_ipotetice_total_5_seeds": 15806504960,
+      "pasi_Adam_per_seed": 570,
+      "pasi_Adam_total_5_seeds": 2850,
+      "evaluari_validation_per_seed": {
+        "in_timpul_antrenarii (o data pe epoca, p = 0)": 30,
+        "finale (p = 0 si 3 niveluri de zgomot)": 4
+      },
+      "timp_simulare_antrenare_s": {
+        "per_seed": [
+          14.591595799996867,
+          14.523981700003787,
+          15.819094900005439,
+          16.73394169999665,
+          20.222772399996757
+        ],
+        "total": 81.8913864999995
+      },
+      "timp_simulare_evaluare_validation_s": {
+        "per_seed": [
+          225.76504520897288,
+          233.89219029195374,
+          234.31491979095154,
+          225.33406679000473,
+          225.14926012599608
+        ],
+        "total": 1144.455482207879
+      },
+      "cost_clasic_PCA_fit_s": {
+        "per_seed": [
+          0.013079416996333748,
+          0.0028474590508267283,
+          0.002221207949332893,
+          0.0021397500531747937,
+          0.0021190840052440763
+        ],
+        "total": 0.02240691805491224
+      },
+      "randuri_folosite_la_PCA_fit": 590,
+      "nota_timp_antrenare": "A: timpul din Exp. 9 (altă sesiune); B: măsurat acum. Nu sunt comparabile exact."
+    },
+    "full_train": {
+      "executii_per_seed": {
+        "antrenare (forward + parameter shift, nominal)": 1150500,
+        "validare după fiecare epocă (p = 0)": 1708860,
+        "validation p = 0, ponderile alese": 56962,
+        "validation sub zgomot (p = 0.001, 0.01, 0.05)": 170886
+      },
+      "executii_total_per_seed": 3087208,
+      "executii_total_5_seeds": 15436040,
+      "shots_ipotetice_total_5_seeds": 15806504960,
+      "pasi_Adam_per_seed": 570,
+      "pasi_Adam_total_5_seeds": 2850,
+      "evaluari_validation_per_seed": {
+        "in_timpul_antrenarii (o data pe epoca, p = 0)": 30,
+        "finale (p = 0 si 3 niveluri de zgomot)": 4
+      },
+      "timp_simulare_antrenare_s": {
+        "per_seed": [
+          13.217611333006062,
+          13.275395333999768,
+          13.429294541012496,
+          13.470089042035397,
+          13.367551167029887
+        ],
+        "total": 66.75994141708361
+      },
+      "timp_simulare_evaluare_validation_s": {
+        "per_seed": [
+          224.25507362594362,
+          224.28909224900417,
+          226.17865062505007,
+          228.06753087299876,
+          228.60538420797093
+        ],
+        "total": 1131.3957315809675
+      },
+      "cost_clasic_PCA_fit_s": {
+        "per_seed": [
+          0.04957866598851979,
+          0.031467708002310246,
+          0.03224449994741008,
+          0.08854108297964558,
+          0.03909058397402987
+        ],
+        "total": 0.24092254089191556
+      },
+      "randuri_folosite_la_PCA_fit": 170883,
+      "nota_timp_antrenare": "A: timpul din Exp. 9 (altă sesiune); B: măsurat acum. Nu sunt comparabile exact."
+    }
+  }
+}

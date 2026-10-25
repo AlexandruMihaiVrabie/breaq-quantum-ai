@@ -5,3 +5,4 @@ data/
 *.csv
 .env
 .DS_Store
+results/result_exp10/scores_cache/
